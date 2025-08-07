@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Noroshi アァイィウヴエオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', monospace;
+      height: 100%;
+      overflow: hidden;
+      color: #00FF9F;
+      background-color: black;
+    }
+
+    canvas#matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -3;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(0,255,128,0.1), rgba(0,0,0,0.9));
+      z-index: -2;
+    }
+
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 20, 0, 0.8);
+      padding: 30px 25px;
+      border-radius: 15px;
+      text-align: center;
+      backdrop-filter: blur(6px);
+      width: 95%;
+      max-width: 480px;
+      box-shadow: 0 0 30px rgba(0, 255, 100, 0.4);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #00FFB2;
+      text-shadow: 0 0 5px #00ff99;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px auto;
+      padding: 14px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #003322;
+      color: #00FF9F;
+      box-shadow: 0 0 10px #00FF9F;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #004d33;
+      transform: scale(1.02);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #qris-img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 15px;
+      border: 2px solid #00FF9F;
+    }
+
+    #nomorDana {
+      font-size: 22px;
+      margin: 10px 0;
+      color: #00ffbf;
+      letter-spacing: 1px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .profile img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #00ffcc;
+      margin-right: 15px;
+    }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ccfff5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Canvas Matrix -->
+<canvas id="matrix"></canvas>
+<div class="overlay"></div>
+
+<!-- Audio -->
+<audio id="masuk-audio" src="https://files.catbox.moe/0s7235.mpga" loop></audio>
+
+<!-- Konten -->
+<div class="container">
+  <div class="profile">
+    <img src="https://files.catbox.moe/8g07ja.jpeg" alt="PP">
+    <div class="profile-name">Noroshi#2025</div>
+  </div>
+  <h1 id="judul">Selamat Datang</h1>
+
+  <div id="menu-masuk">
+    <button onclick="tampilkanMenu()">Masuk</button>
+  </div>
+
+  <div id="menu-opsi" class="hidden">
+    <button onclick="tampilkanDana()">Dana</button>
+    <button onclick="tampilkanQris()">QRIS</button>
+    <button onclick="hubungiWhatsapp()">Kontak</button>
+    <button onclick="kembali()">🔙 Kembali</button>
+  </div>
+
+  <div id="konten" class="hidden"></div>
+</div>
+
+<!-- Menu Logic -->
+<script>
+  const menuMasuk = document.getElementById('menu-masuk');
+  const menuOpsi = document.getElementById('menu-opsi');
+  const konten = document.getElementById('konten');
+  const judul = document.getElementById('judul');
+  const audio = document.getElementById('masuk-audio');
+
+  function tampilkanMenu() {
+    audio.play();
+    judul.innerText = 'Pilih Opsi';
+    menuMasuk.classList.add('hidden');
+    menuOpsi.classList.remove('hidden');
+  }
+
+  function kembali() {
+    judul.innerText = ' Welcome, everyone';
+    menuOpsi.classList.add('hidden');
+    konten.innerHTML = '';
+    konten.classList.add('hidden');
+    menuMasuk.classList.remove('hidden');
+  }
+
+  function tampilkanDana() {
+    judul.innerText = 'Nomor Dana';
+    konten.innerHTML = `
+      <h2 id="nomorDana">6283872294693</h2>
+      <div class="btn-group">
+        <button onclick="copyNomor()">Copy Nomor</button>
+      </div>
+    `;
+    konten.classList.remove('hidden');
+  }
+
+  function tampilkanQris() {
+    judul.innerText = 'Scan QRIS';
+    konten.innerHTML = `
+      <img id="qris-img" src="https://files.catbox.moe/rme8ud.jpg" alt="QRIS Dana">
+      <div class="btn-group">
+        <a href="https://files.catbox.moe/rme8ud.jpg" download>
+          <button>Simpan QRIS</button>
+        </a>
+      </div>
+    `;
+    konten.classList.remove('hidden');
+  }
+
+  function hubungiWhatsapp() {
+    window.location.href = 'https://wa.me/6283872294693';
+  }
+
+  function copyNomor() {
+    const nomor = document.getElementById('nomorDana').innerText;
+    navigator.clipboard.writeText(nomor).then(() => {
+      alert('Nomor Dana berhasil dicopy!');
+    });
+  }
+</script>
+
+<!-- Matrix Effect Script -->
+<script>
+  const canvas = document.getElementById('matrix');
+  const ctx = canvas.getContext('2d');
+
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+
+  const letters = "アァイィウヴエオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const fontSize = 18;
+  const columns = Math.floor(canvas.width / fontSize);
+  const drops = Array(columns).fill(1);
+
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00FF99";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  setInterval(drawMatrix, 40);
+</script>
+
+</body>
+</html>
