@@ -1,262 +1,61 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Noroshi King Yapping</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Courier New', monospace;
-      font-size: 20px; /* default font size diperbesar */
-      height: 100%;
-      overflow: hidden;
-      background-color: black;
-      color: #00FF9F;
-    }
-
-    canvas#matrix {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -3;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(ellipse at center, rgba(0,255,128,0.07), rgba(0,0,0,0.9));
-      z-index: -2;
-    }
-
-    .container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 20, 0, 0.85);
-      padding: 60px 50px;
-      border-radius: 20px;
-      text-align: center;
-      backdrop-filter: blur(8px);
-      width: 98%;
-      max-width: 800px;
-      box-shadow: 0 0 60px rgba(0, 255, 100, 0.45);
-    }
-
-    h1 {
-      margin-bottom: 30px;
-      font-size: 40px;
-      color: #00FFB2;
-      text-shadow: 0 0 6px #00ff99;
-    }
-
-    button {
-      display: block;
-      width: 100%;
-      margin: 18px auto;
-      padding: 22px;
-      font-size: 24px;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background-color: #003322;
-      color: #00FF9F;
-      box-shadow: 0 0 16px #00FF9F;
-      transition: 0.2s;
-    }
-
-    button:hover {
-      background-color: #004d33;
-      transform: scale(1.04);
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #qris-img {
-      max-width: 100%;
-      border-radius: 16px;
-      margin-top: 20px;
-      border: 3px solid #00FF9F;
-    }
-
-    #nomorDana {
-      font-size: 28px;
-      margin: 20px 0;
-      color: #00ffbf;
-      letter-spacing: 1.5px;
-    }
-
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 36px;
-    }
-
-    .profile img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #00ffcc;
-      margin-right: 20px;
-    }
-
-    .profile-name {
-      font-size: 26px;
-      font-weight: bold;
-      color: #ccfff5;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat dengan Freya</title>
+    <link rel="stylesheet" href="freya.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
-<div class="overlay"></div>
+    <div class="chat-container">
 
-<audio id="masuk-audio" src="https://files.catbox.moe/0s7235.mpga" loop></audio>
+        <div class="chat-header">
+            <img src="https://files.catbox.moe/0cszj5.jpg" alt="Freya Profile" class="profile-pic">
+            <div class="header-info">
+                <div class="Freya-name">Freya the Ai (Freya)</div>
+                <div class="status-dot"></div>
+                <div class="status-text">Online</div>
+            </div>
+            <div class="controls-container">
+                <input type="text" id="userName" placeholder="Nama Anda...">
+                <button id="theme-toggle-btn" title="Ganti Tema"></button>
+                <div class="settings-menu" id="settings-menu">
+                    <button class="settings-menu-button" id="settings-menu-button">
+                        <span id="current-mode-text">Pacar (Tsundere)</span>
+                        <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M7 10l5 5 5-5H7z"/></svg>
+                    </button>
+                    <div class="settings-menu-dropdown" id="settings-menu-dropdown">
+                        <a href="#" class="dropdown-item" data-mode="teman">Teman Baik</a>
+                        <a href="#" class="dropdown-item" data-mode="asisten">AI Asisten</a>
+                        <a href="#" class="dropdown-item" data-mode="pacar-biasa">Pacar (Biasa)</a>
+                        <a href="#" class="dropdown-item active" data-mode="pacar-tsundere">Pacar (Tsundere)</a>
+                        <a href="#" class="dropdown-item" data-mode="pacar-yandere">Pacar (Yandere)</a>
+                        <a href="#" class="dropdown-item" data-mode="sange">Sange Mode</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item danger" data-mode="clear">Hapus Sesi Chat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="container">
-  <div class="profile">
-    <img src="https://files.catbox.moe/8g07ja.jpeg" alt="PP">
-    <div class="profile-name">Noroshi#2025</div>
-  </div>
-  <h1 id="judul">Selamat Datang</h1>
+        <div class="chat-box" id="chat-box">
+        </div>
 
-  <div id="menu-masuk">
-    <button onclick="tampilkanMenu()">Masuk</button>
-  </div>
+        <div class="chat-input-area">
+            <textarea id="userInput" placeholder="Ketik pesanmu di sini..." rows="1"></textarea>
+            <button id="sendBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor">
+                    <path d="M3 20v-6l8-2-8-2V4l19 8-19 8z"/>
+                </svg>
+            </button>
+        </div>
 
-  <div id="menu-opsi" class="hidden">
-    <button onclick="tampilkanDana()">Dana</button>
-    <button onclick="tampilkanQris()">QRIS</button>
-    <button onclick="hubungiWhatsapp()">Kontak</button>
-    <button onclick="kembali()">🔙 Kembali</button>
-  </div>
+    </div>
 
-  <div id="konten" class="hidden"></div>
-</div>
-
-<script>
-  const menuMasuk = document.getElementById('menu-masuk');
-  const menuOpsi = document.getElementById('menu-opsi');
-  const konten = document.getElementById('konten');
-  const judul = document.getElementById('judul');
-  const audio = document.getElementById('masuk-audio');
-
-  function tampilkanMenu() {
-    audio.play();
-    judul.innerText = 'Pilih Opsi';
-    menuMasuk.classList.add('hidden');
-    menuOpsi.classList.remove('hidden');
-  }
-
-  function kembali() {
-    judul.innerText = 'Selamat Datang';
-    menuOpsi.classList.add('hidden');
-    konten.innerHTML = '';
-    konten.classList.add('hidden');
-    menuMasuk.classList.remove('hidden');
-  }
-
-  function tampilkanDana() {
-    judul.innerText = 'Nomor Dana';
-    konten.innerHTML = `
-      <h2 id="nomorDana">6283872294693</h2>
-      <div class="btn-group">
-        <button onclick="copyNomor()">Copy Nomor</button>
-      </div>
-    `;
-    konten.classList.remove('hidden');
-  }
-
-  function tampilkanQris() {
-    judul.innerText = 'Scan QRIS';
-    konten.innerHTML = `
-      <img id="qris-img" src="https://files.catbox.moe/rme8ud.jpg" alt="QRIS Dana">
-      <div class="btn-group">
-        <a href="https://files.catbox.moe/rme8ud.jpg" download>
-          <button>Simpan QRIS</button>
-        </a>
-      </div>
-    `;
-    konten.classList.remove('hidden');
-  }
-
-  function hubungiWhatsapp() {
-    window.location.href = 'https://wa.me/6283872294693';
-  }
-
-  function copyNomor() {
-    const nomor = document.getElementById('nomorDana').innerText;
-    navigator.clipboard.writeText(nomor).then(() => {
-      alert('Nomor Dana berhasil dicopy!');
-    });
-  }
-</script>
-
-<!-- Matrix Background Script -->
-<script>
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
-
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
-
-  const letters = "アァイィウヴエオカキクケコサシスセソ亜院炎空国機界神視真風鬼ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const fontSize = 20;
-  const columns = Math.floor(width / fontSize);
-
-  const drops = [];
-  for (let i = 0; i < columns; i++) {
-    drops[i] = Math.random() * -20;
-  }
-
-  function drawMatrix() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.fillStyle = "#00FF99";
-    ctx.font = fontSize + "px monospace";
-
-    for (let i = 0; i < drops.length; i++) {
-      const text = letters.charAt(Math.floor(Math.random() * letters.length));
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      if (drops[i] * fontSize > height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-
-      drops[i]++;
-    }
-  }
-
-  setInterval(drawMatrix, 33);
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
-</script>
-
+    <script src="freya.js"></script>
 </body>
 </html>
